@@ -67,7 +67,7 @@ public class DownloadTask extends AsyncTask<String, Integer, Integer> {
             String directory = Environment.getExternalStorageDirectory().getAbsolutePath();
             Log.e(TAG, "directory = " + directory); // E/DownloadTask: directory = /storage/emulated/0/Download
             String pathName = directory + fileName;
-            Log.e(TAG, "pathName = " + pathName);
+            Log.e(TAG, "pathName = " + pathName); // pathName = /storage/emulated/0/1880fa21d2d7ddb1.epub
             file = new File(pathName);
             if (file.exists()) {    // 如果文件已经存在,获取文件已经下载的进度
                 downloadedLength = file.length();
