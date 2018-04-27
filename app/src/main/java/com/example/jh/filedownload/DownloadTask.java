@@ -21,6 +21,7 @@ public class DownloadTask extends AsyncTask<String, Integer, Integer> {
     public static final int TYPE_FAILED = 1;        //失败
     public static final int TYPE_PAUSED = 2;        //暂停
     public static final int TYPE_CANCELED = 3;      //取消
+    public static final int TYPE_Exits = 4;      //取消
     private static final String TAG = "DownloadTask";
 
 
@@ -31,6 +32,8 @@ public class DownloadTask extends AsyncTask<String, Integer, Integer> {
     private DownloadListener downloadListener;
 
     int progress;
+
+    boolean isFirst = true;
 
     public DownloadTask(DownloadListener mDownloadListener) {
         this.downloadListener = mDownloadListener;
@@ -70,14 +73,33 @@ public class DownloadTask extends AsyncTask<String, Integer, Integer> {
                 downloadedLength = file.length();
                 Log.e(TAG, "downloadedLength = " + downloadedLength);
                 // 如果文件存在就点击读取epub文件，如果文件不存在就下载文件
-
             }
+
             long contentLength = getContentLength(downloadUrl);
             if (contentLength == 0) {
                 return TYPE_FAILED;
             } else if (contentLength == downloadedLength) {   // 如果下载的文件的大小 == 源文件的大小 那么说明下载成功；
                 return TYPE_SUCCESS;
             }
+
+
+//            if (isFirst){
+//                Log.e(TAG, "contentLength = " + contentLength);  // E/DownloadTask: contentLength = 219380
+//                if (contentLength == 0) {
+//                    return TYPE_FAILED;
+//                } else if (contentLength == downloadedLength) {   // 如果下载的文件的大小 == 源文件的大小 那么说明下载成功；
+//                    return TYPE_SUCCESS;
+//                }
+//                isFirst = false;
+//            }else {
+//                Log.e(TAG, "contentLength = " + contentLength);
+//                if (contentLength == 0) {
+//                    return TYPE_FAILED;
+//                } else if (contentLength == downloadedLength) {   // 如果下载的文件的大小 == 源文件的大小 那么说明下载成功；
+//                    return TYPE_SUCCESS;
+//                }
+//            }
+
 
             // 以上排除成功和失败，那么还有两种情况，暂停和取消， 这就需要断点续传
             OkHttpClient client = new OkHttpClient();
