@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
+import android.os.Environment;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 
 import com.example.jh.filedownload.view.RoundlProgresWithNum;
 
+import java.io.File;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -123,10 +125,22 @@ public class DownloadActivity extends AppCompatActivity implements View.OnClickL
         }
         switch (v.getId()) {
             case R.id.button_start:
-//                String url = "https://raw.githubusercontent.com/goulindev/eclipse/master/eclipse-inst-win64.exe";
                 String url = "https://lcadream.oss-cn-shanghai.aliyuncs.com/book/1880fa21d2d7ddb1.epub";
-                binder.startDownload(url);
-                Log.e(tag, "------点击开始下载-------");
+                // 如果文件存在就点击读取epub文件，如果文件不存在就下载文件
+                String fileName =
+                        url.substring(url.lastIndexOf("/")); //获取文件的名称
+                String pathName = Environment.getExternalStorageDirectory().getAbsolutePath() + fileName;
+                Log.e(tag, "pathName = " + pathName); // pathName = /storage/emulated/0/1880fa21d2d7ddb1.epub
+                File file = new File(pathName);
+                if (file.exists()) {    // 如果文件已经存在,获取文件已经下载的进度
+                    // 如果文件存在就点击读取epub文件，如果文件不存在就下载文件
+//                    readEpub(pathName);
+                    ToastUtil.showShort("文件已存在");
+                }else {
+//                    String url = "https://raw.githubusercontent.com/goulindev/eclipse/master/eclipse-inst-win64.exe";
+                    binder.startDownload(url);
+                    Log.e(tag, "------点击开始下载-------");
+                }
                 break;
             case R.id.button_stop:
                 binder.pauseDownload();

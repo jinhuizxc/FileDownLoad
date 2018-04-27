@@ -64,15 +64,14 @@ public class DownloadTask extends AsyncTask<String, Integer, Integer> {
             Log.e(TAG, "fileName = " + fileName);
             // 通过SD卡，获取内部存储的路径
 //            String directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath();
-            String directory = Environment.getExternalStorageDirectory().getAbsolutePath();
-            Log.e(TAG, "directory = " + directory); // E/DownloadTask: directory = /storage/emulated/0/Download
-            String pathName = directory + fileName;
+            String pathName = Environment.getExternalStorageDirectory().getAbsolutePath() + fileName;
             Log.e(TAG, "pathName = " + pathName); // pathName = /storage/emulated/0/1880fa21d2d7ddb1.epub
             file = new File(pathName);
             if (file.exists()) {    // 如果文件已经存在,获取文件已经下载的进度
                 downloadedLength = file.length();
                 Log.e(TAG, "downloadedLength = " + downloadedLength);
                 // 如果文件存在就点击读取epub文件，如果文件不存在就下载文件
+//                readEpub(pathName);
             }
 
             long contentLength = getContentLength(downloadUrl);
